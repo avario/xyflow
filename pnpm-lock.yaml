@@ -209,7 +209,7 @@ importers:
   packages/react:
     dependencies:
       '@xyflow/system':
-        specifier: workspace:*
+        specifier: file:../system
         version: link:../system
       classcat:
         specifier: ^5.0.3
