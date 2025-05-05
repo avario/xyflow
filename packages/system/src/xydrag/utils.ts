@@ -1,22 +1,4 @@
-import { type NodeDragItem, type XYPosition, InternalNodeBase, NodeBase, NodeLookup } from '../types';
-
-export function isParentSelected<NodeType extends NodeBase>(node: NodeType, nodeLookup: NodeLookup): boolean {
-  if (!node.parentId) {
-    return false;
-  }
-
-  const parentNode = nodeLookup.get(node.parentId);
-
-  if (!parentNode) {
-    return false;
-  }
-
-  if (parentNode.selected) {
-    return true;
-  }
-
-  return isParentSelected(parentNode, nodeLookup);
-}
+import { type NodeDragItem, type XYPosition, InternalNodeBase, NodeBase } from '../types';
 
 export function hasSelector(target: Element | EventTarget | null, selector: string, domNode: Element): boolean {
   let current = target as Partial<Element> | null | undefined;
@@ -30,19 +12,33 @@ export function hasSelector(target: Element | EventTarget | null, selector: stri
   return false;
 }
 
-// looks for all selected nodes and created a NodeDragItem for each of them
 export function getDragItems<NodeType extends NodeBase>(
   nodeLookup: Map<string, InternalNodeBase<NodeType>>,
   nodesDraggable: boolean,
   mousePos: XYPosition,
   nodeId?: string
 ): Map<string, NodeDragItem> {
+  function parentDragReplacementOrNode(node: InternalNodeBase<NodeType>): InternalNodeBase<NodeType> {
+    if (node.parentId && node.dragParent) {
+      const parentNode = nodeLookup.get(node.parentId);
+      if (parentNode) {
+        return parentDragReplacementOrNode(parentNode);
+      }
+    }
+    return node;
+  }
+
+  const nodesToDragIds: string[] = Array.from(nodeLookup.values())
+    .filter((node) => node.selected || node.id === nodeId)
+    .map((node) => parentDragReplacementOrNode(node))
+    .flatMap((node) => [node.id, ...(node.dragChildrenIds || [])]);
+
   const dragItems = new Map<string, NodeDragItem>();
 
   for (const [id, node] of nodeLookup) {
     if (
-      (node.selected || node.id === nodeId) &&
-      (!node.parentId || !isParentSelected(node, nodeLookup)) &&
+      nodesToDragIds.includes(id) &&
+      (!node.parentId || !nodesToDragIds.includes(node.parentId)) &&
       (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'))
     ) {
       const internalNode = nodeLookup.get(id);
@@ -114,10 +110,10 @@ export function getEventHandlerParams<NodeType extends InternalNodeBase>({
     !node
       ? nodesFromDragItems[0]
       : {
-        ...node,
-        position: dragItems.get(nodeId)?.position || node.position,
-        dragging,
-      },
+          ...node,
+          position: dragItems.get(nodeId)?.position || node.position,
+          dragging,
+        },
     nodesFromDragItems,
   ];
 }

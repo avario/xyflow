@@ -22,6 +22,9 @@ export type NodeWrapperProps = Pick<
   | 'initialWidth'
   | 'initialHeight'
   | 'parentId'
+  | 'dragParent'
+  | 'dragChildrenIds'
+  | 'origin'
 > & {
   measuredWidth?: number;
   measuredHeight?: number;

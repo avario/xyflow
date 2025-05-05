@@ -54,6 +54,10 @@ export type NodeBase<
   initialHeight?: number;
   /** Parent node id, used for creating sub-flows. */
   parentId?: string;
+  /** If the node should drag it's parent instead of dragging itself */
+  dragParent?: boolean;
+  /** Other nodes that should be dragged with this node */
+  dragChildrenIds?: string[];
   zIndex?: number;
   /**
    * Boundary a node can be moved in.
@@ -106,7 +110,17 @@ export type InternalNodeBase<NodeType extends NodeBase = NodeBase> = Omit<NodeTy
  */
 export type NodeProps<NodeType extends NodeBase> = Pick<
   NodeType,
-  'id' | 'data' | 'width' | 'height' | 'sourcePosition' | 'targetPosition' | 'dragHandle' | 'parentId'
+  | 'id'
+  | 'data'
+  | 'width'
+  | 'height'
+  | 'sourcePosition'
+  | 'targetPosition'
+  | 'dragHandle'
+  | 'parentId'
+  | 'dragParent'
+  | 'dragChildrenIds'
+  | 'origin'
 > &
   Required<Pick<NodeType, 'type' | 'dragging' | 'zIndex' | 'selectable' | 'deletable' | 'selected' | 'draggable'>> & {
     /** Whether a node is connectable or not. */
