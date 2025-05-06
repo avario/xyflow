@@ -56,7 +56,7 @@ export function createFilter({
     // if the target element is inside an element with the nopan class, we prevent panning
     if (
       isWrappedWithClass(event, noPanClassName) &&
-      (event.type !== 'wheel' || (panOnScroll && event.type === 'wheel' && !zoomActivationKeyPressed))
+      (event.type !== 'wheel' || (panOnScroll && event.type === 'wheel' && !zoomScroll))
     ) {
       return false;
     }

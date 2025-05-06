@@ -112,24 +112,35 @@ export function XYPanZoom({
 
     const isPanOnScroll = panOnScroll && !zoomActivationKeyPressed && !userSelectionActive;
 
-    const wheelHandler = isPanOnScroll
-      ? createPanOnScrollHandler({
-        zoomPanValues,
-        noWheelClassName,
-        d3Selection,
-        d3Zoom: d3ZoomInstance,
-        panOnScrollMode,
-        panOnScrollSpeed,
-        zoomOnPinch,
-        onPanZoomStart,
-        onPanZoom,
-        onPanZoomEnd,
-      })
-      : createZoomOnScrollHandler({
-        noWheelClassName,
-        preventScrolling,
-        d3ZoomHandler,
-      });
+    const panOnScrollHandler = createPanOnScrollHandler({
+      zoomPanValues,
+      noWheelClassName,
+      d3Selection,
+      d3Zoom: d3ZoomInstance,
+      panOnScrollMode,
+      panOnScrollSpeed,
+      zoomOnPinch,
+      onPanZoomStart,
+      onPanZoom,
+      onPanZoomEnd,
+    });
+
+    const zoomOnScrollHandler = createZoomOnScrollHandler({
+      noWheelClassName,
+      preventScrolling,
+      d3ZoomHandler,
+    });
+
+    const wheelHandler = function (this: Element, event: WheelEvent, d: unknown) {
+      // Trackpad detection: deltaMode 0 and small deltaY
+      const isTrackpad = event.deltaMode === 0 && Math.abs(event.deltaY) < 50;
+
+      if (isPanOnScroll && isTrackpad) {
+        panOnScrollHandler(event);
+      } else {
+        zoomOnScrollHandler.call(this, event, d);
+      }
+    };
 
     d3Selection.on('wheel.zoom', wheelHandler, { passive: false });
 
