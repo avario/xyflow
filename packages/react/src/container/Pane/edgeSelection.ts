@@ -168,8 +168,6 @@ function bezierIntersectsRect(
   const bezMinY = Math.min(sourceY, targetY, sourceControlY, targetControlY);
   const bezMaxY = Math.max(sourceY, targetY, sourceControlY, targetControlY);
 
-  console.log('checking bezier bounding box');
-
   // Early rejection if bezier bounding box does not intersect the rectangle
   if (!rectsIntersect(bezMinX, bezMinY, bezMaxX, bezMaxY, rectStartX, rectStartY, rectEndX, rectEndY)) return false;
 
@@ -200,8 +198,6 @@ function bezierIntersectsRect(
     prevX = x;
     prevY = y;
   }
-
-  console.log('no intersection found');
 
   // No intersection found
   return false;
