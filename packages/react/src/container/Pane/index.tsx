@@ -215,8 +215,12 @@ export function Pane({
     // }
 
     // Custom: Select edges inside the selection rectangle
-    const selectedEdges = getEdgesInside(nextUserSelectRect, transform, edgeLookup, nodeLookup);
-    selectedEdgeIds.current = new Set(selectedEdges.map((edge) => edge.id));
+    if (selectedNodeIds.current.size == 0) {
+      const selectedEdges = getEdgesInside(nextUserSelectRect, transform, edgeLookup, nodeLookup);
+      selectedEdgeIds.current = new Set(selectedEdges.map((edge) => edge.id));
+    } else {
+      selectedEdgeIds.current = new Set();
+    }
 
     if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.current)) {
       const changes = getSelectionChanges(nodeLookup, selectedNodeIds.current, true) as NodeChange[];
