@@ -24,6 +24,7 @@ import { containerStyle } from '../../styles/utils';
 import { useStore, useStoreApi } from '../../hooks/useStore';
 import { getSelectionChanges } from '../../utils';
 import type { ReactFlowProps, ReactFlowState } from '../../types';
+import getEdgesInside from './edgeSelection';
 
 type PaneProps = {
   isSelecting: boolean;
@@ -142,6 +143,9 @@ export function Pane({
 
     resetSelectedElements();
 
+    selectedNodeIds.current = new Set();
+    selectedEdgeIds.current = new Set();
+
     store.setState({
       userSelectionRect: {
         width: 0,
@@ -195,20 +199,24 @@ export function Pane({
       )
     );
 
-    selectedEdgeIds.current = new Set();
-    const edgesSelectable = defaultEdgeOptions?.selectable ?? true;
+    // selectedEdgeIds.current = new Set();
+    // const edgesSelectable = defaultEdgeOptions?.selectable ?? true;
 
-    // We look for all edges connected to the selected nodes
-    for (const nodeId of selectedNodeIds.current) {
-      const connections = connectionLookup.get(nodeId);
-      if (!connections) continue;
-      for (const { edgeId } of connections.values()) {
-        const edge = edgeLookup.get(edgeId);
-        if (edge && (edge.selectable ?? edgesSelectable)) {
-          selectedEdgeIds.current.add(edgeId);
-        }
-      }
-    }
+    // // We look for all edges connected to the selected nodes
+    // for (const nodeId of selectedNodeIds.current) {
+    //   const connections = connectionLookup.get(nodeId);
+    //   if (!connections) continue;
+    //   for (const { edgeId } of connections.values()) {
+    //     const edge = edgeLookup.get(edgeId);
+    //     if (edge && (edge.selectable ?? edgesSelectable)) {
+    //       selectedEdgeIds.current.add(edgeId);
+    //     }
+    //   }
+    // }
+
+    // Custom: Select edges inside the selection rectangle
+    const selectedEdges = getEdgesInside(nextUserSelectRect, transform, edgeLookup, nodeLookup);
+    selectedEdgeIds.current = new Set(selectedEdges.map((edge) => edge.id));
 
     if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.current)) {
       const changes = getSelectionChanges(nodeLookup, selectedNodeIds.current, true) as NodeChange[];
@@ -246,7 +254,7 @@ export function Pane({
     store.setState({
       userSelectionActive: false,
       userSelectionRect: null,
-      nodesSelectionActive: selectedNodeIds.current.size > 0,
+      nodesSelectionActive: false, //selectedNodeIds.current.size > 0, (never show the selection box)
     });
     onSelectionEnd?.(event);
 
