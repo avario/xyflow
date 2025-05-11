@@ -71,6 +71,7 @@ function FlowRendererComponent<NodeType extends Node = Node>({
   disableKeyboardA11y,
   onViewportChange,
   isControlledViewport,
+  edgeTypeSelectionFunctions,
 }: FlowRendererProps<NodeType>) {
   const { nodesSelectionActive, userSelectionActive } = useStore(selector);
   const selectionKeyPressed = useKeyPress(selectionKeyCode, { target: win });
@@ -120,6 +121,7 @@ function FlowRendererComponent<NodeType extends Node = Node>({
         selectionMode={selectionMode}
         selectionKeyPressed={selectionKeyPressed}
         selectionOnDrag={_selectionOnDrag}
+        edgeTypeSelectionFunctions={edgeTypeSelectionFunctions}
       >
         {children}
         {nodesSelectionActive && (

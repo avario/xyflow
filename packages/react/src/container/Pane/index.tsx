@@ -44,6 +44,7 @@ type PaneProps = {
     | 'onPaneMouseMove'
     | 'onPaneMouseLeave'
     | 'selectionOnDrag'
+    | 'edgeTypeSelectionFunctions'
   >
 >;
 
@@ -81,6 +82,7 @@ export function Pane({
   onPaneMouseMove,
   onPaneMouseLeave,
   children,
+  edgeTypeSelectionFunctions,
 }: PaneProps) {
   const store = useStoreApi();
   const { userSelectionActive, elementsSelectable, dragging, connectionInProgress } = useStore(selector, shallow);
@@ -199,24 +201,15 @@ export function Pane({
       )
     );
 
-    // selectedEdgeIds.current = new Set();
-    // const edgesSelectable = defaultEdgeOptions?.selectable ?? true;
-
-    // // We look for all edges connected to the selected nodes
-    // for (const nodeId of selectedNodeIds.current) {
-    //   const connections = connectionLookup.get(nodeId);
-    //   if (!connections) continue;
-    //   for (const { edgeId } of connections.values()) {
-    //     const edge = edgeLookup.get(edgeId);
-    //     if (edge && (edge.selectable ?? edgesSelectable)) {
-    //       selectedEdgeIds.current.add(edgeId);
-    //     }
-    //   }
-    // }
-
     // Custom: Select edges inside the selection rectangle
     if (selectedNodeIds.current.size == 0) {
-      const selectedEdges = getEdgesInside(nextUserSelectRect, transform, edgeLookup, nodeLookup);
+      const selectedEdges = getEdgesInside(
+        nextUserSelectRect,
+        transform,
+        edgeLookup,
+        nodeLookup,
+        edgeTypeSelectionFunctions
+      );
       selectedEdgeIds.current = new Set(selectedEdges.map((edge) => edge.id));
     } else {
       selectedEdgeIds.current = new Set();

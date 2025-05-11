@@ -58,8 +58,8 @@ export function getEdgePosition(params: GetEdgePositionParams): EdgePosition | n
 
   const sourcePosition = sourceHandle?.position || Position.Bottom;
   const targetPosition = targetHandle?.position || Position.Top;
-  const source = getHandlePosition(sourceNode, sourceHandle, sourcePosition);
-  const target = getHandlePosition(targetNode, targetHandle, targetPosition);
+  const source = getHandlePosition(sourceNode, sourceHandle, sourcePosition, true);
+  const target = getHandlePosition(targetNode, targetHandle, targetPosition, true);
 
   return {
     sourceX: source.x,

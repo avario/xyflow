@@ -14,6 +14,8 @@ import {
   Connection,
   NodeChange,
   EdgeChange,
+  Rect,
+  EdgePosition,
 } from '@xyflow/system';
 
 import type { Node, Edge, ReactFlowInstance, EdgeProps, NodeProps } from '.';
@@ -84,6 +86,8 @@ export type EdgeTypes = Record<
     }
   >
 >;
+
+export type EdgeTypeSelectionFunctions = Record<string, (edge: EdgePosition, rect: Rect) => boolean>;
 
 export type UnselectNodesAndEdgesParams<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {
   nodes?: NodeType[];

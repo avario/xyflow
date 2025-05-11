@@ -104,6 +104,7 @@ function GraphViewComponent<NodeType extends Node = Node, EdgeType extends Edge 
   rfId,
   viewport,
   onViewportChange,
+  edgeTypeSelectionFunctions,
 }: GraphViewProps<NodeType, EdgeType>) {
   useNodeOrEdgeTypesWarning(nodeTypes);
   useNodeOrEdgeTypesWarning(edgeTypes);
@@ -150,6 +151,7 @@ function GraphViewComponent<NodeType extends Node = Node, EdgeType extends Edge 
       disableKeyboardA11y={disableKeyboardA11y}
       onViewportChange={onViewportChange}
       isControlledViewport={!!viewport}
+      edgeTypeSelectionFunctions={edgeTypeSelectionFunctions}
     >
       <Viewport>
         <EdgeRenderer<EdgeType>

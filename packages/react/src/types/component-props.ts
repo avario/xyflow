@@ -26,6 +26,7 @@ import type {
   OnSelectionChangeFunc,
   NodeTypes,
   EdgeTypes,
+  EdgeTypeSelectionFunctions,
   Node,
   Edge,
   ConnectionLineComponent,
@@ -310,6 +311,7 @@ export interface ReactFlowProps<NodeType extends Node = Node, EdgeType extends E
    * const edgeTypes = { nameOfEdgeType: CustomEdge };
    */
   edgeTypes?: EdgeTypes;
+  edgeTypeSelectionFunctions?: EdgeTypeSelectionFunctions;
   /**
    * The type of edge path to use for connection lines.
    *

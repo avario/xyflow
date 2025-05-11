@@ -145,6 +145,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
     colorMode = 'light',
     debug,
     onScroll,
+    edgeTypeSelectionFunctions,
     ...rest
   }: ReactFlowProps<NodeType, EdgeType>,
   ref: ForwardedRef<HTMLDivElement>
@@ -247,6 +248,7 @@ function ReactFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
           nodeExtent={nodeExtent}
           viewport={viewport}
           onViewportChange={onViewportChange}
+          edgeTypeSelectionFunctions={edgeTypeSelectionFunctions}
         />
         <StoreUpdater<NodeType, EdgeType>
           nodes={nodes}

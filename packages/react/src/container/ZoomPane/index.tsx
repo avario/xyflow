@@ -18,6 +18,7 @@ type ZoomPaneProps = Omit<
   | 'noDragClassName'
   | 'disableKeyboardA11y'
   | 'selectionOnDrag'
+  | 'edgeTypeSelectionFunctions'
 > & {
   isControlledViewport: boolean;
 };
