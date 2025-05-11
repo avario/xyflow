@@ -57,7 +57,7 @@ export default function getEdgesInside(
           return false;
         }
 
-        return selectionFunction(edgePosition, paneRect);
+        return selectionFunction(edge, edgePosition, paneRect);
       } else {
         return false;
       }

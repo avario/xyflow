@@ -87,7 +87,10 @@ export type EdgeTypes = Record<
   >
 >;
 
-export type EdgeTypeSelectionFunctions = Record<string, (edge: EdgePosition, rect: Rect) => boolean>;
+export type EdgeTypeSelectionFunctions = Record<
+  string,
+  (edge: Edge, edgePosition: EdgePosition, rect: Rect) => boolean
+>;
 
 export type UnselectNodesAndEdgesParams<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {
   nodes?: NodeType[];
