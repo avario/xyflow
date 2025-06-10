@@ -4,6 +4,8 @@ export type EdgeBase<
   EdgeData extends Record<string, unknown> = Record<string, unknown>,
   EdgeType extends string | undefined = string | undefined
 > = {
+  /** Whenever an edge is selected, all other edges that share a selectionId will also be selected. */
+  selectionId?: string;
   /** Unique id of an edge. */
   id: string;
   /** Type of edge defined in `edgeTypes`. */

@@ -27,7 +27,9 @@ export default function getEdgesInside(
     height: rect.height / tScale,
   };
 
-  return [...edgeLookup.values()]
+  const allEdges = [...edgeLookup.values()];
+
+  const selectedEdges = allEdges
     .filter((edge) => edge.selectable !== false)
     .filter((edge) => {
       const edgeType = edge.type;
@@ -62,4 +64,8 @@ export default function getEdgesInside(
         return false;
       }
     });
+
+  const selectionIds = selectedEdges.map((edge) => edge.selectionId);
+
+  return allEdges.filter((e) => selectedEdges.includes(e) || (e.selectionId && selectionIds.includes(e.selectionId)));
 }
