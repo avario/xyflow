@@ -1518,13 +1518,8 @@ function Pane({ isSelecting, selectionKeyPressed, selectionMode = SelectionMode.
         const prevSelectedEdgeIds = selectedEdgeIds.current;
         selectedNodeIds.current = new Set(getNodesInside(nodeLookup, nextUserSelectRect, transform, selectionMode === SelectionMode.Partial, true).map((node) => node.id));
         // Custom: Select edges inside the selection rectangle
-        if (selectedNodeIds.current.size == 0) {
-            const selectedEdges = getEdgesInside(nextUserSelectRect, transform, edgeLookup, nodeLookup, edgeTypeSelectionFunctions);
-            selectedEdgeIds.current = new Set(selectedEdges.map((edge) => edge.id));
-        }
-        else {
-            selectedEdgeIds.current = new Set();
-        }
+        const selectedEdges = getEdgesInside(nextUserSelectRect, transform, edgeLookup, nodeLookup, edgeTypeSelectionFunctions);
+        selectedEdgeIds.current = new Set(selectedEdges.map((edge) => edge.id));
         if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.current)) {
             const changes = getSelectionChanges(nodeLookup, selectedNodeIds.current, true);
             triggerNodeChanges(changes);
