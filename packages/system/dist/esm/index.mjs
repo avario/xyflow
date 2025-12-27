@@ -2769,7 +2769,7 @@ function XYPanZoom({ domNode, minZoom, maxZoom, paneClickDistance, translateExte
             if (isPanOnScroll && isTrackpad) {
                 panOnScrollHandler(event);
             }
-            else {
+            else if (zoomOnScroll) {
                 zoomOnScrollHandler.call(this, event, d);
             }
         };
