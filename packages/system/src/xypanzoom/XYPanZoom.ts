@@ -137,7 +137,7 @@ export function XYPanZoom({
 
       if (isPanOnScroll && isTrackpad) {
         panOnScrollHandler(event);
-      } else {
+      } else if (zoomOnScroll) {
         zoomOnScrollHandler.call(this, event, d);
       }
     };
